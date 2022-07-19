@@ -37,7 +37,6 @@ void insere_item_pelo_fim(dados_no_t **lista, dados_no_t *item);
 void remove_enter(string s);
 void soma_estoque(dados_no_t *lista);
 void buscar_produto(dados_no_t *lista);
-void mostra_produto(dados_no_t *lista, int i);
 
 int main()
 {
