@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define FIM 			4
+#define FIM 			6
 #define TRUE			1
 #define FALSE 		0
 
@@ -35,6 +35,9 @@ void apaga_todos_os_itens_do_estoque(dados_no_t **lista);
 boolean lista_esta_vazia(dados_no_t *lista);
 void insere_item_pelo_fim(dados_no_t **lista, dados_no_t *item);
 void remove_enter(string s);
+void soma_estoque(dados_no_t *lista);
+void buscar_produto(dados_no_t *lista);
+void mostra_produto(dados_no_t *lista, int i);
 
 int main()
 {
@@ -56,6 +59,12 @@ int main()
 							
 	 		case 3: apaga_todos_os_itens_do_estoque(&lista);
 	 						break;
+
+      case 4: buscar_produto(lista);
+              break;
+
+      case 5: soma_estoque(lista);
+              break;
 	 	}
 		
 	} while (opcao != FIM);
@@ -67,10 +76,12 @@ int menu()
 {
   int opcao;
 	
-	printf("1.Inserir novo item no estoque\n");
+	printf("\n1.Inserir novo item no estoque\n");
 	printf("2.Mostrar todos os itens do estoque\n");
 	printf("3.Apagar todos os itens do estoque\n");
-	printf("4.Sair do programa\n");
+  printf("4.Buscar produto\n");
+  printf("5.Somar o pvalor total do estoque\n");
+	printf("6.Sair do programa\n");
 	printf("?: ");
 	scanf("%d", &opcao);
 	
@@ -139,6 +150,63 @@ void insere_item_pelo_fim(dados_no_t **lista, dados_no_t *item)
 		while (aux->prox != NULL) aux = aux->prox;
 		aux->prox = item;
 	}
+}
+
+void soma_estoque(dados_no_t *lista)
+{
+  dados_no_t *aux = lista;
+  float valor_estoque;
+  
+  if (lista_esta_vazia(lista) == TRUE) 
+  {
+    //verifica se a lista está vazia
+		printf("\nNenhum produto cadastrado.\n");
+	}
+  else
+  {
+    while (aux != NULL) 
+    {
+      //soma a quantidade vezes o valor unitario de todos os produtos cadastrados
+      valor_estoque = valor_estoque+(aux->quantidade*aux->valor);
+      aux = aux->prox; 
+    }
+    printf("\nO valor em reais do estoque atual é de: %.2f\n", valor_estoque);
+  }
+}
+
+void buscar_produto(dados_no_t *lista)
+{
+    string busca;
+    int i;
+    dados_no_t *aux = lista;
+  
+    if (lista_esta_vazia(lista) == TRUE) 
+    {
+      //verifica se a lista está vazia
+  		printf("\nA lista está vazia.\n");
+  	}
+    else
+    {
+      printf("\nPor qual produto voce procura: ");
+      scanf(" %s", busca); 
+      
+    	while (aux != NULL) 
+      {
+        //compara todos os produtos com o produto buscado
+    	  if(strcmp(aux->descricao, busca)==0)
+        {
+          printf("\n Produto: %s", lista[i].descricao);
+          printf("\n Quantidade: %i ", lista[i].quantidade);
+          printf("\n Valor: %f\n", lista[i].valor);
+          return;
+        }
+        else
+        {
+      	aux = aux->prox; 
+        }
+  	}
+    printf("\nEsse produto nao consta nos produtos cadastrados.\n\n");
+  }
 }
 
 void remove_enter(string s)
